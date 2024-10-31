@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Student Score</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h3 class="mb-4">Add New Student Score</h3>
+
+      <!-- Table for creating a new student and entering scores -->
+      <form id="studentForm">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th>Student ID</th>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="studentId"
+                  name="student_id"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Class ID</th>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="classId"
+                  name="class_id"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Exam Score</th>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="examScore"
+                  name="exam_score"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Quiz Score</th>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quizScore"
+                  name="quiz_score"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Homework 1 Score</th>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="homework1Score"
+                  name="homework_1_score"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Homework 2 Score</th>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="homework2Score"
+                  name="homework_2_score"
+                  required
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+      document
+        .getElementById("studentForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Get form values
+          const studentId = document.getElementById("studentId").value;
+          const classId = document.getElementById("classId").value;
+          const examScore = document.getElementById("examScore").value;
+          const quizScore = document.getElementById("quizScore").value;
+          const homework1Score =
+            document.getElementById("homework1Score").value;
+          const homework2Score =
+            document.getElementById("homework2Score").value;
+
+          // Display entered data
+          document.getElementById("displayStudentId").textContent = studentId;
+          document.getElementById("displayClassId").textContent = classId;
+          document.getElementById("displayExamScore").textContent = examScore;
+          document.getElementById("displayQuizScore").textContent = quizScore;
+          document.getElementById("displayHomework1Score").textContent =
+            homework1Score;
+          document.getElementById("displayHomework2Score").textContent =
+            homework2Score;
+
+          // Clear the form
+          document.getElementById("studentForm").reset();
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

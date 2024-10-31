@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Student Score</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h3 class="mb-4">Edit Student Score Data</h3>
+
+      <!-- Form for main data -->
+      <form id="editForm">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th>_id</th>
+              <th>Student ID</th>
+              <th>Class ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="_id"
+                  name="_id"
+                  value="{{_id}}"
+                  readonly
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="student_id"
+                  name="student_id"
+                  value="{{student_id}}"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="class_id"
+                  name="class_id"
+                  value="{{class_id}}"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Scores</h4>
+
+        <!-- Table for editable scores array -->
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Type</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Exam</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="exam"
+                  name="exam"
+                  value="{{exam}}"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Quiz</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quiz"
+                  name="quiz"
+                  value="{{quiz}}"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Homework 1</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="homework_1"
+                  name="homework_1"
+                  value="{{homework_1}}"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Homework 2</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="homework_2"
+                  name="homework_2"
+                  value="{{homework_2}}"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Save Button -->
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const jsonData = Object.fromEntries(formData.entries());
+
+          console.log(jsonData);
+
+          fetch("http://localhost:3000/api/v1/edit/score", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(jsonData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                alert("Data updated successfully!");
+                window.location.reload();
+              } else {
+                alert("Failed to update data.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again later.");
+            });
+        });
+    </script>
+  </body>
+</html>
