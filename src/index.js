@@ -200,6 +200,44 @@ app.put(`${process.env.BASE_API_PATH}/edit/score`, async (req, res) => {
   }
 });
 
+app.post(`${process.env.BASE_API_PATH}/add/grade`, async (req, res) => {
+  try {
+    const { student_id, class_id, exam, quiz, homework_1, homework_2 } =
+      req.body;
+    const newGrade = new Grade({
+      student_id,
+      class_id,
+      scores: [
+        {
+          score: exam,
+          type: "exam",
+        },
+        {
+          score: quiz,
+          type: "quiz",
+        },
+        {
+          score: homework_1,
+          type: "homework",
+        },
+        {
+          score: homework_2,
+          type: "homework",
+        },
+      ],
+    });
+
+    await newGrade.save();
+    res.status(200).send({
+      status: "success",
+      message: "Grade added successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ status: "error", message: "Internal Server Error" });
+  }
+});
+
 app.delete(
   `${process.env.BASE_API_PATH}/delete/grade/:id`,
   async (req, res) => {
