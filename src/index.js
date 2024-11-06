@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const formidable = require("formidable");
 const { ObjectId } = require("mongodb");
+const path = require("path");
 const env = require("dotenv");
 
 //
 const Grade = require("./schema/Grades");
+const { dir } = require("console");
 
 const app = express();
 env.config();
@@ -258,6 +261,47 @@ app.delete(
     }
   }
 );
+
+app.get(`/upload-file`, async (req, res) => {
+  res.sendFile(__dirname + "/public/views/upload_file.html");
+});
+
+app.post("/api/v1/upload-file", async (req, res) => {
+  const form = new formidable.IncomingForm();
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    console.log("Uploaded file:", files.uploadedFile);
+    const file = files.uploadedFile[0];
+
+    const timestamp = Date.now();
+    const fileExtension = path.extname(file.originalFilename);
+    const newFileName = `file_${timestamp}${fileExtension}`;
+
+    const filePath = path.join(__dirname, "public/resources", newFileName);
+
+    try {
+      fs.renameSync(file.filepath, filePath);
+      res.send(`
+        File uploaded and saved successfully.<br>
+        View at: <a href="http://localhost:3000/view/file/${newFileName}">http://localhost:3000/view/file/${newFileName}</a>
+      `);
+    } catch (err) {
+      console.error("Error saving file:", err);
+      res.status(500).send("File upload failed");
+    }
+  });
+});
+
+app.get(`/view/file/:file`, async (req, res) => {
+  const file = req.params.file;
+  const filePath = path.join(__dirname, "public/resources", file);
+  console.log("File path:", filePath);
+  res.status(200).sendFile(filePath);
+});
 
 // listening on port 3000
 app.listen(port, () => console.log(`[Server] App listening on port ${port}!`));

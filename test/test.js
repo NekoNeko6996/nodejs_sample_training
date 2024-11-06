@@ -1,6 +1,8 @@
+const { query } = require("express");
 const testFunction = require("./module.js");
 const fs = require("fs");
 const path = require("path");
+const querystring = require("querystring");
 
 console.log(process.cwd());
 console.log(process.argv);
@@ -46,5 +48,6 @@ fs.writeFile("text.txt", text, (err) => {
   }
 });
 
-
-console.log(path.parse( "text.txt"));
+console.log(path.parse("text.txt"));
+console.log(querystring.parse("name=John&age=30&city=New+York"));
+console.log(querystring.stringify({ name: "John", age: 30, city: "New York" }));
