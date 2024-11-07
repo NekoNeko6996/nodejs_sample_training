@@ -3,16 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Upload file</title>
+    <title>Upload File with Preview and Drag & Drop</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Style for the drag-and-drop area */
+      .drag-drop-area {
+        border: 2px dashed #007bff;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        color: #007bff;
+      }
+      .drag-drop-area.dragover {
+        background-color: #e9ecef;
+      }
+      .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <form
-      action="http://localhost:3000/api/v1/upload-file"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <input type="file" name="uploadedFile" />
-      <input type="submit" value="Submit" />
-    </form>
+    <div class="container mt-5">
+      <h2 class="text-center">Upload File with Preview and Drag & Drop</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <!-- Drag and Drop Area -->
+          <div
+            class="drag-drop-area"
+            id="dragDropArea"
+            onclick="document.getElementById('uploadedFile').click()"
+          >
+            <p>Drag and drop a file here or click to select a file</p>
+          </div>
+
+          <!-- Preview Image -->
+          <img id="previewImage" class="preview-image" />
+
+          <!-- File Upload Form -->
+          <form
+            action="http://localhost:3000/file/api/v1/upload-file"
+            method="post"
+            enctype="multipart/form-data"
+            class="mt-3"
+          >
+            <input
+              type="file"
+              name="uploadedFile"
+              class="form-control-file"
+              id="uploadedFile"
+              onchange="previewFile()"
+              style="display: none"
+            />
+            <button type="submit" class="btn btn-primary btn-block mt-3">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const dragDropArea = document.getElementById("dragDropArea");
+      const uploadedFileInput = document.getElementById("uploadedFile");
+      const previewImage = document.getElementById("previewImage");
+
+      // Function to preview file
+      function previewFile() {
+        const file = uploadedFileInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Drag & Drop events
+      dragDropArea.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dragDropArea.classList.add("dragover");
+      });
+
+      dragDropArea.addEventListener("dragleave", () => {
+        dragDropArea.classList.remove("dragover");
+      });
+
+      dragDropArea.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dragDropArea.classList.remove("dragover");
+
+        // Set file input with the dropped file
+        if (event.dataTransfer.files.length > 0) {
+          uploadedFileInput.files = event.dataTransfer.files;
+          previewFile();
+        }
+      });
+
+      function validateFileSize() {
+        const fileInput = document.getElementById("uploadedFile");
+        const file = fileInput.files[0];
+        if (file && file.size === 0) {
+          alert("File size cannot be zero.");
+          return false;
+        }
+        return true;
+      }
+    </script>
   </body>
 </html>
