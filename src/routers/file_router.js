@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require("path");
 const fs = require("fs");
 const formidable = require("formidable");
+const env = require("dotenv");
 
 // view file
 router.get("/", (req, res) => {
@@ -18,7 +19,7 @@ router.get("/img/view/all", (req, res) => {
 });
 
 // api upload file
-router.post(`/api/v1/upload-file`, async (req, res) => {
+router.post(`${process.env.BASE_API_PATH}/upload-file`, async (req, res) => {
   const form = new formidable.IncomingForm();
   form.parse(req, (err, fields, files) => {
     if (err) {
@@ -83,7 +84,7 @@ router.get(`/get/all/img`, (req, res) => {
   });
 });
 
-router.delete("/api/v1/delete-file", (req, res) => {
+router.delete(`${process.env.BASE_API_PATH}/delete-file`, (req, res) => {
   const { file } = req.body;
   const filePath = path.join(__dirname, "../public/resources/img", file);
 
@@ -101,4 +102,9 @@ router.delete("/api/v1/delete-file", (req, res) => {
     });
   });
 });
+
+router.get(`${process.env.BASE_API_PATH}/get/file/history`, (req, res) => {
+  
+})
+
 module.exports = router;

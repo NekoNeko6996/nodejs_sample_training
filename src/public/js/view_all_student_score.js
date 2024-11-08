@@ -64,7 +64,7 @@ function populateTable(data) {
 }
 
 function viewDetails(id) {
-  location.href = `https://8n423k36-3000.asse.devtunnels.ms/view/grade/${id}`;
+  location.href = `http://localhost:3000/view/grade/${id}`;
 }
 
 function editDetails(id) {
