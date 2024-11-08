@@ -51,3 +51,17 @@ fs.writeFile("text.txt", text, (err) => {
 console.log(path.parse("text.txt"));
 console.log(querystring.parse("name=John&age=30&city=New+York"));
 console.log(querystring.stringify({ name: "John", age: 30, city: "New York" }));
+
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject("errrrr")
+  }, 2000)
+})
+
+promise
+.then((text) => {
+  console.log(text)
+})
+.catch((err) => {
+  console.log(err)
+})

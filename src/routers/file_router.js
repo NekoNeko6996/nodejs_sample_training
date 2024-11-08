@@ -33,7 +33,7 @@ router.post(`/api/v1/upload-file`, async (req, res) => {
     const fileExtension = path.extname(file.originalFilename);
     const newFileName = `file_${timestamp}${fileExtension}`;
 
-    const filePath = path.join(__dirname, "../public/resources", newFileName);
+    const filePath = path.join(__dirname, "../public/resources/img", newFileName);
 
     try {
       fs.renameSync(file.filepath, filePath);
@@ -50,12 +50,12 @@ router.post(`/api/v1/upload-file`, async (req, res) => {
 
 router.get(`/view/:file`, async (req, res) => {
   const file = req.params.file;
-  const filePath = path.join(__dirname, "../public/resources", file);
+  const filePath = path.join(__dirname, "../public/resources/img", file);
   res.status(200).sendFile(filePath);
 });
 
 router.get(`/get/all/img`, (req, res) => {
-  const folder = path.join(__dirname, "../public/resources");
+  const folder = path.join(__dirname, "../public/resources/img");
 
   fs.readdir(folder, (err, files) => {
     if (err) {
@@ -85,7 +85,7 @@ router.get(`/get/all/img`, (req, res) => {
 
 router.delete("/api/v1/delete-file", (req, res) => {
   const { file } = req.body;
-  const filePath = path.join(__dirname, "../public/resources", file);
+  const filePath = path.join(__dirname, "../public/resources/img", file);
 
   fs.unlink(filePath, (err) => {
     if (err) {
